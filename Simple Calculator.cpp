@@ -3,86 +3,70 @@
 #include <string>
 using namespace std;
 
-int operationChoice;
-float number1;
-float number2;
+double currentInput;
 string retry;
 
-void toggle(int operationChoice) {
-    switch(operationChoice){
-        case 1:
-        cout << "Masukkan angka pertama: ";
-        cin >> number1;
-        cout << "Masukkan angka kedua: ";
-        cin >> number2;
-        cout << "Hasilnya adalah: ";
-        cout << number1 + number2;
-        cout << "\n";
-        break;
+void clearScreen() {
+    std::cout << "\033[2J\033[1;1H";
+}
 
-        case 2:
-        cout << "Masukkan angka pertama: ";
-        cin >> number1;
-        cout << "Masukkan angka kedua: ";
-        cin >> number2;
-        cout << "Hasilnya adalah: ";
-        cout << number1 - number2;
-        cout << "\n";
-        break;
-
-        case 3:
-        cout << "Masukkan angka pertama: ";
-        cin >> number1;
-        cout << "Masukkan angka kedua: ";
-        cin >> number2;
-        cout << "Hasilnya adalah: ";
-        cout << number1 * number2;
-        cout << "\n";
-        break;
-
-        case 4:
-        cout << "Masukkan angka pertama: ";
-        cin >> number1;
-        cout << "Masukkan angka kedua: ";
-        cin >> number2;
-        if (number2 == 0){
-            cout << "Can't divide with 0. \n";
-            break;
+void toggle(double currentInput) {
+    bool calculating = 1;
+    string operation;
+    double temp;
+    while (calculating == 1) {
+        cout << "then the operation will be... ";
+        cin >> operation;
+        if (operation == "+") {
+            cin >> temp;
+            currentInput = currentInput + temp;
+            temp = 0;
         }
-        cout << "Hasilnya adalah: ";
-        cout << number1 / number2;
-        cout << "\n";
-        break;
+        else if (operation == "-") {
+            cin >> temp;
+            currentInput = currentInput - temp;
+            temp = 0;
+        }
+        else if (operation == "*") {
+            cin >> temp;
+            currentInput = currentInput * temp;
+            temp = 0;
+        }
+        else if (operation == "/") {
+            cin >> temp;
+            if (temp == 0) {
+                cout << "Can't divide by 0.\n";
+            } else currentInput = currentInput / temp;
+            temp = 0;
+        }
+        else if (operation == "CALCULATE") {
+            cout << "The result is: ";
+            cout << currentInput;
+            calculating = 0;
+        }
+        else {
+            continue;
+        }
     }
 }
 
 int main() {
-    cout << "Welcome to the calculator! \n";
-    cout << "Pick and choose. (1-4) \n";
-    cout << "---------------------------- \n";
-    cout << "1 - Addition (+) \n";
-    cout << "2 - Subtraction (-) \n";
-    cout << "3 - Multiplication (x) \n";
-    cout << "4 - Division (/) \n";
-    cout << "0 - Exit \n";
-    cout << "\n";
-    cout << "It's... ";
-    cin >> operationChoice;
-    if (operationChoice == 0) {
-        return 0;
-    } else if (operationChoice > 4) {
-        cout << "\033[2J\033[1;1H";
-        main();
-    } else if (operationChoice < 1) {
-        cout << "\033[2J\033[1;1H";
-        main();
-    }
-    toggle(operationChoice);
-    cout << "Do you want to do it again? [y/else] ";
-    cin >> retry;
-    if (retry == "y") {
-        cout << "\033[2J\033[1;1H";
-        main();
+    bool running = 1;
+    while (running == 1) {
+        cout << "Welcome to the calculator!\n";
+        cout << "Available operations are:\n";
+        cout << "+ - * /\n";
+        cout << "To calculate, type in CALCULATE for your operation!\n";
+        cout << "Input your number...\n";
+        cin >> currentInput;
+        toggle(currentInput);
+        cout << "\nDo you want to do it again? [y/else] ";
+        cin >> retry;
+        if (retry == "y") {
+            clearScreen();
+        } else {
+            running = 0;
+        }
     }
     return 0;
 }
